@@ -43,6 +43,8 @@ class Player(Entity):
             else:
                 self.direction.y = 0
 
+            if keys[pygame.K_r]:
+                self.reload()
 
             if keys[pygame.K_SPACE]:
                 self.attacking = True
