@@ -33,6 +33,7 @@ class Entity(pygame.sprite.Sprite):
         self.health = 3
         self.is_vulnerable = True
         self.hit_time = None
+        self.score = 0
 
         self.hit_sound = pygame.mixer.Sound('./sound/coffin_hit.mp3')
         self.hit_sound.set_volume(DAMAGE_SOUND_VOLUME)
