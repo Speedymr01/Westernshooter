@@ -28,6 +28,10 @@ class Entity(pygame.sprite.Sprite):
         self.attacking = False
         self.attack_frame = 2
         self.coffin_damage = False
+        self.ammo = 6
+        self.can_shoot = True
+        self.reloading = False
+        self.reload_clock = pygame.time.Clock()
 
         # health
         self.health = 3
@@ -38,6 +42,7 @@ class Entity(pygame.sprite.Sprite):
         self.hit_sound.set_volume(DAMAGE_SOUND_VOLUME)
         self.shoot_sound = pygame.mixer.Sound('./sound/bullet.wav')
         self.shoot_sound.set_volume(SHOOT_SOUND_VOLUME)
+        self.reload_sound = pygame.mixer.Sound(r'sound\reload.wav')
     
     def blink(self):
         if not self.is_vulnerable:
@@ -59,17 +64,28 @@ class Entity(pygame.sprite.Sprite):
             self.health -= 1
             self.is_vulnerable = False
             self.hit_time = pygame.time.get_ticks()
-            if not self.coffin_damage:
-                self.hit_sound.stop()
-                self.hit_sound.play()
     
     def check_death(self):
         if self.health <= 0:
             self.kill()
 
+    def reload(self, current_time, current_ammo):
+        if not self.can_shoot:
+            self.reloading = True
+            self.reload_time = pygame.time.get_ticks()
+            self.reload_sound.play()
+            if current_ammo != 0:
+                if (current_time - self.reload_time) > 2:
+                    self.can_shoot = True
+                    ammo = 6
+                    self.reloading = False
+                    return ammo
+            else:
+                return current_ammo
+
     def vulnerability_timer(self):
         if not self.is_vulnerable:
-            current_time = pygame.time.get_ticks()#
+            current_time = pygame.time.get_ticks()
             if (current_time - self.hit_time) > 400:
                 self.is_vulnerable = True
    

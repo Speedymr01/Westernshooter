@@ -43,29 +43,35 @@ class Player(Entity):
             else:
                 self.direction.y = 0
 
+            if keys[pygame.K_r]:
+                    self.ammo = self.reload(current_time = pygame.time.get_ticks(), current_ammo = self.ammo)
 
             if keys[pygame.K_SPACE]:
-                self.attacking = True
-                self.direction = vector()
-                self.frame_index = 0
-                self.bullet_shot = False
-                match self.status.split('_')[0]:
-                    case 'left': self.bullet_direction = vector(-1,0)
-                    case 'right': self.bullet_direction = vector(1,0)
-                    case 'up': self.bullet_direction = vector(0,-1)
-                    case 'down': self.bullet_direction = vector(0,1)
+                if self.ammo != 0:    
+                    self.attacking = True
+                    self.direction = vector()
+                    self.frame_index = 0
+                    self.bullet_shot = False
+                    match self.status.split('_')[0]:
+                        case 'left': self.bullet_direction = vector(-1,0)
+                        case 'right': self.bullet_direction = vector(1,0)
+                        case 'up': self.bullet_direction = vector(0,-1)
+                        case 'down': self.bullet_direction = vector(0,1)
                 
     def animate(self, dt):
         current_animation = self.animations[self.status]
 
         self.frame_index += 7 * dt
 
-        if int(self.frame_index) == 2 and self.attacking and not self.bullet_shot:
-            bullet_start_pos = self.rect.center + self.bullet_direction * 80
-            self.create_bullet(bullet_start_pos, self.bullet_direction)
-            self.bullet_shot = True
-            self.shoot_sound.play()
-
+        if int(self.frame_index) == 2 and self.attacking and not self.bullet_shot and self.can_shoot:
+            if self.ammo != 0 or None:
+                bullet_start_pos = self.rect.center + self.bullet_direction * 80
+                self.create_bullet(bullet_start_pos, self.bullet_direction)
+                self.ammo -= 1
+                self.bullet_shot = True
+                self.shoot_sound.play()
+            elif self.ammo == 0:
+                self.ammo = self.reload(current_time = pygame.time.get_ticks())
         if self.frame_index >=len(current_animation):
             self.frame_index = 0
             if self.attacking:
