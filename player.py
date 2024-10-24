@@ -90,8 +90,10 @@ class Player(Entity):
                 elapsed_time = pygame.time.get_ticks() - start_time
                 while elapsed_time < timer_duration:
                     pass
-                self.ammo = 6
-                reloading = False
+                if elapsed_time == timer_duration:
+                    reloading = False
+            self.ammo = 6
+
 
 
     def check_death(self):
