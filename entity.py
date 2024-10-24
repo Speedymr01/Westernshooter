@@ -64,9 +64,7 @@ class Entity(pygame.sprite.Sprite):
                 self.hit_sound.stop()
                 self.hit_sound.play()
     
-    def check_death(self):
-        if self.health <= 0:
-            self.kill()
+
 
     def vulnerability_timer(self):
         if not self.is_vulnerable:

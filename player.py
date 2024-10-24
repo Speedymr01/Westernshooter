@@ -22,7 +22,6 @@ class Player(Entity):
         if self.attacking:
             self.status = self.status.split('_')[0] + '_attack'
 
-
     def input(self):
         keys = pygame.key.get_pressed()
 
@@ -79,7 +78,6 @@ class Player(Entity):
 
     def check_death(self):
         if self.health <= 0:
-            self.score += 25
             
             pygame.quit()
             sys.exit()
