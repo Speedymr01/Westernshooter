@@ -12,7 +12,7 @@ class Player(Entity):
         self.bullet_shot = False
         self.health = 3
 
-        self.reload_sound = pygame.mixer.Sound(##########################)
+        self.reload_sound = pygame.mixer.Sound('sound/reload.wav')
 
     def get_status(self):
         # idle
@@ -49,15 +49,17 @@ class Player(Entity):
                 self.reload()
 
             if keys[pygame.K_SPACE]:
-                self.attacking = True
-                self.direction = vector()
-                self.frame_index = 0
-                self.bullet_shot = False
-                match self.status.split('_')[0]:
-                    case 'left': self.bullet_direction = vector(-1,0)
-                    case 'right': self.bullet_direction = vector(1,0)
-                    case 'up': self.bullet_direction = vector(0,-1)
-                    case 'down': self.bullet_direction = vector(0,1)
+                if self.ammo > 0:
+                    self.attacking = True
+                    self.direction = vector()
+                    self.frame_index = 0
+                    self.bullet_shot = False
+                    self.ammo -= 1
+                    match self.status.split('_')[0]:
+                        case 'left': self.bullet_direction = vector(-1,0)
+                        case 'right': self.bullet_direction = vector(1,0)
+                        case 'up': self.bullet_direction = vector(0,-1)
+                        case 'down': self.bullet_direction = vector(0,1)
                 
     def animate(self, dt):
         current_animation = self.animations[self.status]
@@ -80,6 +82,16 @@ class Player(Entity):
 
     def reload(self):
         if self.ammo == 0:
+            reloading = True
+            start_time = pygame.time.get_ticks()
+            timer_duration = 4500 
+            self.reload_sound.play()
+            while reloading:
+                elapsed_time = pygame.time.get_ticks() - start_time
+                while elapsed_time < timer_duration:
+                    pass
+                self.ammo = 6
+                reloading = False
 
 
     def check_death(self):
