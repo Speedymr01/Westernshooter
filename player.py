@@ -3,6 +3,7 @@ from pygame.math import Vector2 as vector
 from os import walk
 from entity import Entity
 import sys
+import time
 
 class Player(Entity):
     def __init__(self, pos, groups, path, collision_sprites, create_bullet):
@@ -11,6 +12,7 @@ class Player(Entity):
         self.create_bullet = create_bullet
         self.bullet_shot = False
         self.health = 3
+        self.score = 0
 
     def get_status(self):
         # idle
@@ -76,6 +78,7 @@ class Player(Entity):
 
     def check_death(self):
         if self.health <= 0:
+            
             pygame.quit()
             sys.exit()
 

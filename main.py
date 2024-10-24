@@ -5,6 +5,7 @@ from pygame.math import Vector2 as vector
 from pytmx.util_pygame import load_pygame
 from sprite import Sprite, Bullet
 from monster import Coffin, Cactus
+import time
 
 class Allsprites(pygame.sprite.Group):
 	def __init__(self):
@@ -40,6 +41,7 @@ class Game:
 
 
 		self.setup()
+		self.font = pygame.font.Font('./font/subatomic.ttf', 50)
 		self.music = pygame.mixer.Sound('./sound/music.mp3')
 		self.music.set_volume(MUSIC_VOLUME)
 		self.music.play(loops = -1)
@@ -88,10 +90,17 @@ class Game:
 
 		self.heart_surf = pygame.image.load('./graphics/other/heart.png').convert_alpha()
 
-
+	def display_win(self):
+		Highscore_text = 'You Win!'
+		text_surf = self.font.render(Highscore_text, True, (255, 0, 0))
+		text_rect = text_surf.get_rect(midbottom = (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
+		self.display_surface.blit(text_surf, text_rect)
+		pygame.draw.rect(self.display_surface, (255, 0, 0), text_rect.inflate(30, 30), width = 8, border_radius = 5)
+		pygame.display.update()
+		time.sleep(5)
 
 	def run(self):
-		while True:
+		while self.player.score != 25:
 			# event loop 
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
@@ -107,6 +116,11 @@ class Game:
 			
 			self.all_sprites.customize_draw(self.player)
 
+			Highscore_text = f'Score: {self.player.score}'
+			text_surf = self.font.render(Highscore_text, True, (255, 255, 255))
+			text_rect = text_surf.get_rect(midbottom = (WINDOW_WIDTH / 4 * 3, WINDOW_HEIGHT - 50))
+			self.display_surface.blit(text_surf, text_rect)
+			pygame.draw.rect(self.display_surface, (255, 255, 255), text_rect.inflate(30, 30), width = 8, border_radius = 5)
 			
 			if self.player.health >= 1:	
 				self.display_surface.blit(self.heart_surf, ((WINDOW_WIDTH / 60) + 200, WINDOW_HEIGHT / 90))
@@ -116,6 +130,8 @@ class Game:
 				self.display_surface.blit(self.heart_surf, (WINDOW_WIDTH / 60, WINDOW_HEIGHT / 90))
 
 			pygame.display.update()
+		self.display_win()
+		
 
 if __name__ == '__main__':
 	print('Please edit the settings file before playing.')
