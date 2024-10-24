@@ -12,6 +12,8 @@ class Player(Entity):
         self.bullet_shot = False
         self.health = 3
 
+        self.reload_sound = pygame.mixer.Sound(##########################)
+
     def get_status(self):
         # idle
         if self.direction.x == 0 and self.direction.y == 0:
@@ -75,6 +77,10 @@ class Player(Entity):
 
         self.image = current_animation[int(self.frame_index)]
         self.mask = pygame.mask.from_surface(self.image)
+
+    def reload(self):
+        if self.ammo == 0:
+
 
     def check_death(self):
         if self.health <= 0:
