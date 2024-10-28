@@ -65,6 +65,14 @@ class Game:
 		if pygame.sprite.spritecollide(self.player, self.bullets, True, pygame.sprite.collide_mask):
 			self.player.damage()
 
+	def ammo_display(self):
+		Highscore_text = f'{self.player.ammo}/6'
+		text_surf = self.font.render(Highscore_text, True, (255, 255, 255))
+		text_rect = text_surf.get_rect(midbottom = (WINDOW_WIDTH / 4 * 3, WINDOW_HEIGHT - 50))
+		self.display_surface.blit(text_surf, text_rect)
+		pygame.draw.rect(self.display_surface, (255, 255, 255), text_rect.inflate(30, 30), width = 8, border_radius = 5)
+
+
 	def setup(self):
 		tmx_map = load_pygame('./data/map.tmx')
 		for x, y, surf in tmx_map.get_layer_by_name('fence').tiles():
@@ -128,7 +136,9 @@ class Game:
 				self.display_surface.blit(self.heart_surf, ((WINDOW_WIDTH / 60) + 100, WINDOW_HEIGHT / 90))
 			if self.player.health >= 3:
 				self.display_surface.blit(self.heart_surf, (WINDOW_WIDTH / 60, WINDOW_HEIGHT / 90))
+			
 
+			self.ammo_display()
 			pygame.display.update()
 		self.display_win()
 		
