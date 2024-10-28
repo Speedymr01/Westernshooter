@@ -34,6 +34,7 @@ class Entity(pygame.sprite.Sprite):
         self.health = 3
         self.is_vulnerable = True
         self.hit_time = None
+        self.score = 0
 
         self.hit_sound = pygame.mixer.Sound('./sound/coffin_hit.mp3')
         self.hit_sound.set_volume(DAMAGE_SOUND_VOLUME)
@@ -64,9 +65,7 @@ class Entity(pygame.sprite.Sprite):
                 self.hit_sound.stop()
                 self.hit_sound.play()
     
-    def check_death(self):
-        if self.health <= 0:
-            self.kill()
+
 
     def vulnerability_timer(self):
         if not self.is_vulnerable:

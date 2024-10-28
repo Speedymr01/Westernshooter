@@ -54,6 +54,7 @@ class Coffin(Entity, Monster):
 		self.notice_radius = 550
 		self.walk_radius = 400
 		self.attack_radius = 50
+		self.player.score = 0
 
 	def animate(self,dt):
 		current_animation = self.animations[self.status]
@@ -78,6 +79,11 @@ class Coffin(Entity, Monster):
 		if self.attacking:
 			self.status = self.status.split('_')[0] + '_attack'
 
+	def check_death(self):
+		if self.health <= 0:
+			self.kill()
+			self.player.score += 1
+
 	def update(self,dt):
 		self.face_player()
 		self.walk_to_player()
@@ -101,6 +107,7 @@ class Cactus(Entity, Monster):
 		self.attack_radius = 350
 		self.speed = 90
 		self.attack_frame = 6
+		
 
 		#bullets
 		self.create_bullet = create_bullet
@@ -124,6 +131,11 @@ class Cactus(Entity, Monster):
 		self.image = current_animation[int(self.frame_index)]
 		self.mask = pygame.mask.from_surface(self.image)
 	
+	def check_death(self):
+		if self.health <= 0:
+			self.kill()
+			self.player.score += 1
+
 	def attack(self):
 		distance = self.get_player_distance_direction()[0]
 		if distance < self.attack_radius and not self.attacking:

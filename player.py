@@ -3,6 +3,7 @@ from pygame.math import Vector2 as vector
 from os import walk
 from entity import Entity
 import sys
+import time
 
 class Player(Entity):
     def __init__(self, pos, groups, path, collision_sprites, create_bullet):
@@ -15,6 +16,7 @@ class Player(Entity):
         self.reload_duration = 4500  # 4.5 seconds
         self.ammo = 6
         self.reload_sound = pygame.mixer.Sound('sound/reload.wav')
+        self.score = 0
 
     def get_status(self):
         # idle
@@ -73,11 +75,19 @@ class Player(Entity):
         self.image = current_animation[int(self.frame_index)]
         self.mask = pygame.mask.from_surface(self.image)
 
+
     def reload(self):
         if self.ammo == 0 and not self.reloading:
             self.reloading = True
             self.reload_start_time = pygame.time.get_ticks()
             self.reload_sound.play()
+
+    def check_death(self):
+        if self.health <= 0:
+            
+            pygame.quit()
+            sys.exit()
+
 
     def update(self, dt):
         if self.reloading:
