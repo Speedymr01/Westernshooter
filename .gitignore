@@ -2,3 +2,5 @@
 __pycache__/settings.cpython-312.pyc
 __pycache__/monster.cpython-312.pyc
 __pycache__/entity.cpython-312.pyc
+__pycache__/player.cpython-312.pyc
+__pycache__/sprite.cpython-312.pyc
