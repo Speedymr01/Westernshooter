@@ -71,6 +71,14 @@ class Game:
 		text_rect = text_surf.get_rect(midbottom = (WINDOW_WIDTH / 4 * 3, WINDOW_HEIGHT - 50))
 		self.display_surface.blit(text_surf, text_rect)
 		pygame.draw.rect(self.display_surface, (255, 255, 255), text_rect.inflate(30, 30), width = 8, border_radius = 5)
+	
+
+	def Reload_display(self):
+		Highscore_text = f'Reloading...'
+		text_surf = self.font.render(Highscore_text, True, (255, 255, 255))
+		text_rect = text_surf.get_rect(midbottom = (WINDOW_WIDTH / 5 * 4, WINDOW_HEIGHT/ 20 * 2))
+		self.display_surface.blit(text_surf, text_rect)
+		pygame.draw.rect(self.display_surface, (255, 255, 255), text_rect.inflate(30, 30), width = 8, border_radius = 5)
 
 
 	def setup(self):
@@ -139,6 +147,8 @@ class Game:
 			
 
 			self.ammo_display()
+			if self.player.reloading:
+				self.Reload_display()
 			pygame.display.update()
 		self.display_win()
 		
