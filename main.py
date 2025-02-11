@@ -1,3 +1,16 @@
+var1 = [
+    'pygame',
+    'pytmx'
+]
+
+for var2 in var1:
+    try:
+        __import__(var2)
+    except ImportError:
+        command = f"{sys.executable} -m pip install {var2}"
+        os.system(command)  # Run the pip install command using os.system
+        print(f"{var2} installed successfully.")
+
 import pygame, sys
 from settings import * 
 from player import Player
