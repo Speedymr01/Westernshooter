@@ -1,3 +1,4 @@
+import os
 var1 = [
     'pygame',
     'pytmx'
